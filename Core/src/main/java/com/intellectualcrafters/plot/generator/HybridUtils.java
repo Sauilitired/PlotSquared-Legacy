@@ -262,15 +262,17 @@ public abstract class HybridUtils {
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Iterator<ChunkLoc> iterator = regions.iterator();
-                                ChunkLoc loc = iterator.next();
-                                iterator.remove();
-                                PS.debug("&c[ERROR]&7 Could not update '" + area.worldname + "/region/r." + loc.x + "." + loc.z
+                                if (iterator.hasNext()) {
+                                    ChunkLoc loc = iterator.next();
+                                    iterator.remove();
+                                    PS.debug("&c[ERROR]&7 Could not update '" + area.worldname + "/region/r." + loc.x + "." + loc.z
                                         + ".mca' (Corrupt chunk?)");
-                                int sx = loc.x << 5;
-                                int sz = loc.z << 5;
-                                for (int x = sx; x < sx + 32; x++) {
-                                    for (int z = sz; z < sz + 32; z++) {
-                                        ChunkManager.manager.unloadChunk(area.worldname, new ChunkLoc(x, z), true, true);
+                                    int sx = loc.x << 5;
+                                    int sz = loc.z << 5;
+                                    for (int x = sx; x < sx + 32; x++) {
+                                        for (int z = sz; z < sz + 32; z++) {
+                                            ChunkManager.manager.unloadChunk(area.worldname, new ChunkLoc(x, z), true, true);
+                                        }
                                     }
                                 }
                                 PS.debug("&d - Potentially skipping 1024 chunks");
